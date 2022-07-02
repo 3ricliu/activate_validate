@@ -2,6 +2,7 @@ import "./styles/tailwind.css";
 import { Formik, Form, Field } from "formik";
 import { useState, useCallback } from "react";
 import Modal from "react-modal";
+import { Formik, Form, Field } from "formik";
 
 function App() {
   const [achievements, updateAchievements] = useState([]);
