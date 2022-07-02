@@ -17,7 +17,7 @@ function App() {
   console.log(isOpen);
   return (
     <div>
-      <Modal isOpen={isOpen}>
+      <Modal isOpen={isOpen} ariaHideApp={false}>
         <h1>Validate it!</h1>
         <Formik
           initialValues={{ summary: "" }}
@@ -37,7 +37,7 @@ function App() {
           )}
         </Formik>
       </Modal>
-      <button onClick={openModal}>Accomplishment</button>
+      <button onClick={openModal}>Add Accomplishment</button>
     </div>
   );
 }
