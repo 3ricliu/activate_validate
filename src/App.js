@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import Modal from "react-modal";
 
 function App() {
+  const [achievements, updateAchievements] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = useCallback(() => {
@@ -14,7 +15,6 @@ function App() {
     setIsOpen(false);
   }, [setIsOpen]);
 
-  console.log(isOpen);
   return (
     <div>
       <Modal isOpen={isOpen} ariaHideApp={false}>
@@ -23,8 +23,8 @@ function App() {
           initialValues={{ summary: "" }}
           onSubmit={(values, { setSubmitting }) => {
             closeModal();
-            console.log("submitting");
-            console.log({ values });
+            achievements.push(values);
+            updateAchievements(achievements);
           }}
         >
           {({ isSubmitting }) => (
@@ -37,6 +37,11 @@ function App() {
           )}
         </Formik>
       </Modal>
+      <ul>
+        {achievements.map((achievement, index) => {
+          return <li key={index}>{achievement.summary}</li>;
+        })}
+      </ul>
       <button onClick={openModal}>Add Accomplishment</button>
     </div>
   );
