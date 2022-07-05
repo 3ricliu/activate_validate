@@ -2,7 +2,8 @@ import "./styles/tailwind.css";
 import { Formik, Form, Field } from "formik";
 import { useState, useCallback } from "react";
 import Modal from "react-modal";
-import { Formik, Form, Field } from "formik";
+import { getFirestore, doc, collection, addDoc } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
 
 function App() {
   const [achievements, updateAchievements] = useState([]);
@@ -22,10 +23,19 @@ function App() {
         <h1>Validate it!</h1>
         <Formik
           initialValues={{ summary: "" }}
-          onSubmit={(values, { setSubmitting }) => {
-            closeModal();
-            achievements.push(values);
-            updateAchievements(achievements);
+          onSubmit={async (values, { setSubmitting }) => {
+            try {
+              const docRef = await addDoc(collection(db, "achievements"), {
+                summary: values.summary,
+              });
+              console.log("Document written with ID: ", docRef.id);
+              achievements.push(values);
+              updateAchievements(achievements);
+            } catch (e) {
+              console.error("Error adding document: ", e);
+            } finally {
+              closeModal();
+            }
           }}
         >
           {({ isSubmitting }) => (
@@ -49,3 +59,16 @@ function App() {
 }
 
 export default App;
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC3yGPsOtKfMNcBoJGWSAk2ZRjFBhtFc1M",
+  authDomain: "activate-validate.firebaseapp.com",
+  projectId: "activate-validate",
+  storageBucket: "activate-validate.appspot.com",
+  messagingSenderId: "305549924099",
+  appId: "1:305549924099:web:e77c6ef018e8a5cd3bfb36",
+  measurementId: "G-3ZVYX1K7G2",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
